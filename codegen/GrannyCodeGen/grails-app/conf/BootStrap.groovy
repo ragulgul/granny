@@ -9,5 +9,6 @@ class BootStrap {
         velocityEngine.init()
     }
     def destroy = {
+        
     }
 }

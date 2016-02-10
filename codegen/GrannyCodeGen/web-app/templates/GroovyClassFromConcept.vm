@@ -1,0 +1,22 @@
+package $concept.repository.uri
+
+#foreach( $referredConcept in $concept.usesConcepts )
+import $referredConcept.repository.uri
+#end
+
+/**
+    $concept.description
+**/
+class $concept.name {
+
+#foreach( $conProp in $conceptProperties )
+    #if( $conProp.propertyType !=  "Complex")
+        $conProp.propertyType $conProp.name
+    #else
+        $conProp.conceptQualifiedName $conProp.name
+    #end
+#end
+
+
+
+}
