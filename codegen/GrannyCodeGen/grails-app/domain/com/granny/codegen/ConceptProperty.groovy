@@ -3,7 +3,7 @@ package com.granny.codegen
 import com.granny.codegen.enums.PropertyCollectionType
 import com.granny.codegen.enums.PropertyType
 
-class Property {
+class ConceptProperty {
 
     Concept belongsToConcept
     PropertyType propertyType

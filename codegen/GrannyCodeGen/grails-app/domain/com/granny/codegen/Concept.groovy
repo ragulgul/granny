@@ -7,7 +7,7 @@ class Concept {
     Repository repository
     Set<Concept> usesConcepts
     Concept extendsConcept
-    Set<Property> properties
+    Set<ConceptProperty> conceptProperties
     String name
     String description
 
@@ -16,5 +16,5 @@ class Concept {
         description(nullable: true)
     }
 
-    static hasMany = [usesConcepts: Concept,properties:Property]
+    static hasMany = [usesConcepts: Concept,conceptProperties:ConceptProperty]
 }
