@@ -18,7 +18,7 @@ class Concept {
     }
 
     def loadUsedConcepts(){
-        conceptProperties.each {
+        /*conceptProperties.each {
             if(it.propertyType == PropertyType.Complex){
                 try {
                     def concept = this.class.getClassLoader().loadClass(it.conceptQualifiedName)
@@ -27,7 +27,7 @@ class Concept {
                     log.error("Could not load class : $it.conceptQualifiedName")
                 }
             }
-        }
+        }*/
     }
 
     static hasMany = [usesConcepts: Concept,conceptProperties:ConceptProperty]
