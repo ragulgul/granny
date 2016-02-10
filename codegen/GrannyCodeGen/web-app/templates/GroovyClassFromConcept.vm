@@ -1,4 +1,4 @@
-package $concept.repository.uri
+package $repository.uri
 
 #foreach( $referredConcept in $concept.usesConcepts )
 import $referredConcept.repository.uri
@@ -16,7 +16,5 @@ class $concept.name {
         $conProp.conceptQualifiedName $conProp.name
     #end
 #end
-
-
 
 }

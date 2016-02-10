@@ -115,3 +115,6 @@ log4j.main = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+
+conceptVMPath = "/Users/siddharthbanerjee/workspace/personal/granny/granny/codegen/GrannyCodeGen/web-app/templates/GroovyClassFromConcept.vm"
