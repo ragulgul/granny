@@ -8,8 +8,10 @@ class BootStrap {
     def velocityEngine
 
     def init = { servletContext ->
+
         //velocityEngine.setProperty(VelocityEngine.RUNTIME_LOG_LOGSYSTEM, this)
         velocityEngine.init()
+
         /**
          * Seed the system with one concept
          */
