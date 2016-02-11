@@ -3,13 +3,19 @@ import com.granny.codegen.enums.PropertyType
 import com.granny.codegen.repo.Repository
 import com.granny.codegen.ConceptProperty
 
+
 class BootStrap {
 
     def velocityEngine
+    def grailsApplication
 
     def init = { servletContext ->
 
         //velocityEngine.setProperty(VelocityEngine.RUNTIME_LOG_LOGSYSTEM, this)
+        //velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        velocityEngine.setProperty("file.resource.loader.path", grailsApplication.config.velocityTemplatePath);
+        velocityEngine.setProperty("file.resource.loader.cache", true);
+        //velocityEngine.setProperty("file.resource.loader.modificationCheckInterval", 3000);
         velocityEngine.init()
 
         /**
@@ -26,7 +32,7 @@ class BootStrap {
 
     def createConcept(){
         def concept = new Concept(name: "Menu",description:"This is the collection of food items categorized by meal type")
-        def repo = new Repository(uri:"com.granny.food.",shorthand: "food")
+        def repo = new Repository(uri:"com.granny.food",shorthand: "food")
         repo.save(failOnError: true)
         concept.repository = repo
         concept.save(failOnError: true)

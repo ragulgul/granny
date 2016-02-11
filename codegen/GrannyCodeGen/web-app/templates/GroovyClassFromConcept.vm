@@ -1,4 +1,4 @@
-package $repository.uri
+package $repositoryuri
 
 #foreach( $referredConcept in $concept.usesConcepts )
 import $referredConcept.repository.uri

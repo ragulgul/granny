@@ -117,4 +117,6 @@ log4j.main = {
 }
 
 
-conceptVMPath = "/Users/siddharthbanerjee/workspace/personal/granny/granny/codegen/GrannyCodeGen/web-app/templates/GroovyClassFromConcept.vm"
+conceptTemplate = "GroovyClassFromConcept.vm"
+velocityTemplatePath = "/Users/siddharthbanerjee/workspace/personal/granny/granny/codegen/GrannyCodeGen/web-app/templates"
+

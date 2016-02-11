@@ -8,7 +8,7 @@ hibernate {
 }
 
 grails {
-    mongo {
+    mongodb {
         host = "localhost"
         port = 27017
         databaseName = "Granny"
