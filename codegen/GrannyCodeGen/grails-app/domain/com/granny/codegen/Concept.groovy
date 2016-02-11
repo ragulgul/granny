@@ -6,7 +6,7 @@ import com.granny.codegen.repo.Repository
 class Concept {
 
     Repository repository
-    transient Set<Concept> usesConcepts
+    transient Set<Concept> usesConcepts = new HashSet<Concept>()
     Concept extendsConcept
     Set<ConceptProperty> conceptProperties
     String name
@@ -17,18 +17,20 @@ class Concept {
         description(nullable: true)
     }
 
-    def loadUsedConcepts(){
-        /*conceptProperties.each {
-            if(it.propertyType == PropertyType.Complex){
-                try {
-                    def concept = this.class.getClassLoader().loadClass(it.conceptQualifiedName)
-                    this.usesConcepts.add(concept)
-                }catch(exp){
-                    log.error("Could not load class : $it.conceptQualifiedName")
-                }
-            }
-        }*/
+    static mappedBy = [conceptProperties:'belongsToConcept']
+
+    def onLoad = {
+        log.debug("Fired after object is loaded from DB")
+        loadUsedConcepts()
     }
 
-    static hasMany = [usesConcepts: Concept,conceptProperties:ConceptProperty]
+    def loadUsedConcepts() {
+        conceptProperties.each {
+            if (it.propertyType == PropertyType.Complex) {
+                this.usesConcepts.add(it.referencedConcept)
+            }
+        }
+    }
+
+    static hasMany = [usesConcepts: Concept, conceptProperties: ConceptProperty]
 }

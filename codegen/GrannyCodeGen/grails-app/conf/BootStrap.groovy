@@ -11,45 +11,50 @@ class BootStrap {
 
     def init = { servletContext ->
 
-        //velocityEngine.setProperty(VelocityEngine.RUNTIME_LOG_LOGSYSTEM, this)
-        //velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         velocityEngine.setProperty("file.resource.loader.path", grailsApplication.config.velocityTemplatePath);
         velocityEngine.setProperty("file.resource.loader.cache", true);
-        //velocityEngine.setProperty("file.resource.loader.modificationCheckInterval", 3000);
         velocityEngine.init()
-
         /**
-         * Seed the system with one concept
+         * Seed the system with a couple of concepts
          */
         if(Concept.count()==0){
-            createConcept()
+            def propList = []
+            propList.add([propertyType:PropertyType.String,name: "category"])
+            propList.add([propertyType:PropertyType.Boolean,name: "available"])
+            propList.add([propertyType:PropertyType.String,name: "description"])
+            propList.add([propertyType:PropertyType.String,name: "name"])
+            def menuConcept = createConcept("Menu","This is a restaurant menu","com.granny.food","food",propList)
+
+            propList.clear()
+            propList.add([propertyType:PropertyType.Complex,name: "belongsToMenu",referencedConcept:menuConcept])
+            propList.add([propertyType:PropertyType.Boolean,name: "available"])
+            propList.add([propertyType:PropertyType.String,name: "name"])
+            propList.add([propertyType:PropertyType.String,name: "description"])
+            propList.add([propertyType:PropertyType.Double,name: "price"])
+            def foodConcept = createConcept("FoodItem","This is a restaurant food item","com.granny.food","food",propList)
         }
+
     }
 
     def destroy = {
 
     }
 
-    def createConcept(){
-        def concept = new Concept(name: "Menu",description:"This is the collection of food items categorized by meal type")
-        def repo = new Repository(uri:"com.granny.food",shorthand: "food")
+    def createConcept(String conceptName, String conceptDesc,String repoURI, String repoShortHand,List propertyMap){
+
+        def concept = new Concept(name: conceptName,description:conceptDesc)
+        def repo = new Repository(uri:repoURI,shorthand: repoShortHand)
         repo.save(failOnError: true)
         concept.repository = repo
         concept.save(failOnError: true)
 
-        ConceptProperty prop1 = new ConceptProperty(propertyType:PropertyType.String,name: "category",belongsToConcept:concept)
-        prop1.save(failOnError: true)
-        ConceptProperty prop2 = new ConceptProperty(propertyType:PropertyType.Boolean,name: "available",belongsToConcept:concept)
-        prop2.save(failOnError: true)
-        ConceptProperty prop3 = new ConceptProperty(propertyType:PropertyType.String,name: "description",belongsToConcept:concept)
-        prop3.save(failOnError: true)
-        ConceptProperty prop4 = new ConceptProperty(propertyType:PropertyType.String,name: "name",belongsToConcept:concept)
-        prop4.save(failOnError: true)
+        propertyMap.each {
+            ConceptProperty prop = new ConceptProperty(it as Map)
+            prop.setBelongsToConcept(concept)
+            prop.save()
+            concept.addToConceptProperties(prop)
+        }
 
-        concept.addToConceptProperties(prop1)
-        concept.addToConceptProperties(prop2)
-        concept.addToConceptProperties(prop3)
-        concept.addToConceptProperties(prop4)
         concept.save(failOnError: true)
     }
 

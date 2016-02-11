@@ -1,20 +1,56 @@
 package $repositoryuri
 
-#foreach( $referredConcept in $concept.usesConcepts )
-import $referredConcept.repository.uri
+#foreach( $referredConcept in $usesConcepts )
+    #if($referredConcept != $repositoryuri)
+    import $referredConcept
+    #end
+
 #end
 
 /**
-    $concept.description
+$concept.description
 **/
 class $concept.name {
 
 #foreach( $conProp in $conceptProperties )
-    #if( $conProp.propertyType !=  "Complex")
+    #if( $conProp.multipleEntries == true  )
+        $conProp.propertyCollectionType $conProp.name
+    #elseif( $conProp.propertyType !=  "Complex")
         $conProp.propertyType $conProp.name
     #else
-        $conProp.conceptQualifiedName $conProp.name
+        $conProp.referencedConcept.name $conProp.name
     #end
 #end
+
+static constraints = {
+#foreach( $conProp in $conceptProperties )
+    #set($foo = [])
+    $conProp.name (
+        #if($conProp.nullable == true)
+            $foo.add("nullable:true");
+        #end
+        #if($conProp.unique == true)
+            $foo.add("unique:true");
+        #end
+        $display.list($foo)
+    )
+#end
+
+
+}
+
+static hasMany=[
+#set($doo = [])
+#foreach( $conProp in $conceptProperties )
+    #if( $conProp.multipleEntries == true )
+        $doo.add("$conProp.name : $conProp.referencedConcept.name"))
+    #end
+#end
+$display.list($doo)
+]
+
+static mapping = {
+writeConcern WriteConcern.FSYNC_SAFE
+}
 
 }

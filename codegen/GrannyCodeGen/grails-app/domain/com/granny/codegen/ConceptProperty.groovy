@@ -7,7 +7,7 @@ class ConceptProperty {
 
     Concept belongsToConcept
     PropertyType propertyType
-    String conceptQualifiedName
+    Concept referencedConcept
     String name
     String description = null
     Boolean multipleEntries = false
@@ -23,6 +23,7 @@ class ConceptProperty {
     Integer maxSize
     Boolean nullable = true
     String defaultValue
+    Boolean unique = false
 
 
     static constraints = {
@@ -32,7 +33,7 @@ class ConceptProperty {
         description(nullable: true)
         propertyCollectionType(nullable: true)
         searchable(nullable: true)
-        conceptQualifiedName(nullable: true)
+        referencedConcept(nullable: true)
     }
 
 }

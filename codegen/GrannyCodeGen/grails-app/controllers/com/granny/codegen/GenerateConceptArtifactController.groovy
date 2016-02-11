@@ -6,7 +6,10 @@ class GenerateConceptArtifactController {
 
     def generateConceptArtifact() {
         def conceptList = Concept.findAll()
-        def response = conceptGeneratorService.generateConcept(conceptList.get(0))
-        render response
+        def buffer = new StringBuffer()
+        conceptList.each {
+            buffer.append(conceptGeneratorService.generateConcept(it))
+        }
+        render buffer.toString()
     }
 }
